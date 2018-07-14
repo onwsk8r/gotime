@@ -175,3 +175,19 @@ func GetTimeFormatFast(str string) (string, error) {
 
 	return timefmt.String(), nil
 }
+
+// GetDateFormatSafely uses regexes to parse date formats. *NOT IMPLEMENTED
+// Using this function ensures the returned format string will
+// work correctly. Use this function when you are unsure if
+// your date is properly formatted.
+func GetDateFormatSafely(str string) (string, error) {
+	return "", errors.NotImplementedf("This function has not been implemented")
+}
+
+// GetTimeFormatSafely uses regexes to parse date formats. *NOT IMPLEMENTED
+// Using this function ensures the returned format string will
+// work correctly. Use this function when you are unsure if
+// your time is properly formatted.
+func GetTimeFormatSafely(str string) (string, error) {
+	return "", errors.NotImplementedf("This function has not been implemented")
+}
