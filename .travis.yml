@@ -1,0 +1,27 @@
+language: go
+dist: trusty
+addons:
+  apt:
+    packages:
+    - realpath
+go:
+- "1.10"
+git:
+  depth: 3
+
+install:
+- go get -u ./...
+- go get -u github.com/alecthomas/gometalinter github.com/onsi/ginkgo/ginkgo github.com/onsi/gomega github.com/mattn/goveralls
+
+before_script:
+- gometalinter --install
+
+script:
+- ginkgo -p -r -race -randomizeAllSpecs -randomizeSuites -failOnPending -trace -compilers 2
+- gometalinter -j 2 --deadline 599s ./...
+
+after_success:
+- ginkgo -r -covermode=set
+- 'echo "mode: atomic" > profile'
+- tail -q -n+2 $(find -name "*\.coverprofile") >> profile
+- goveralls -coverprofile=profile -service=travis-ci -repotoken $COVERALLS_TOKEN
