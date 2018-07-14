@@ -38,12 +38,10 @@ func (p *ParseError) Error() string {
 	return fmt.Sprintf("Error parsing '%s': %s", p.From, p.Problem)
 }
 
-// ParseFast extends time.Parse to be a little more flexible.
-// It does what it can to handle the various flavors of ISO-8601,
-// with some caveats. For example, time.Parse() has no way to handle
-// week numbers, so the time would have to be converted to a different
-// format, which this function does not do.
-func ParseFast(str string) (time.Time, error) {
+// Parse is like a patternless version of time.Parse.
+// It uses the package specified pattern finding functions
+// to determine the pattern and then calls time.Parse internally.
+func Parse(str string) (time.Time, error) {
 	datefmt, err := GetDateFormatFast(str)
 	if err != nil {
 		return time.Time{}, err
@@ -81,7 +79,7 @@ func GetDateFormatFast(str string) (string, error) {
 		// 	datefmt = "2006-W01"
 		// }
 		return "", NewParseError(str, "Cannot parse week numbers")
-	} else if s, _ := strconv.Atoi(str); strconv.Itoa(s) == str { // nolint: gas
+	} else if s, _ := strconv.Atoi(str); strconv.Itoa(s) == str { // nolint: gas, errcheck
 		switch len(str) {
 		case 7: // YYYYDDD
 			return "", NewParseError(str, "Cannot parse day of year")
@@ -102,4 +100,78 @@ func GetDateFormatFast(str string) (string, error) {
 		}
 	}
 	return "", NewParseError(str, "Cannot make heads or tails")
+}
+
+// GetTimeFormatFast tries to find the time and TZ format. Fast.
+// Being as such it uses fuzzy matching, such as the number of
+// colons, to determine the format: it does not ensure the string
+// conforms to the format. For example, input of "50:60:70" would
+// return "15:04:05", and input of "T99-" would return "20060102".
+// Do not use this function if you are unsure that your string contains
+// a valid time.
+//
+// Valid times: HH:MM:SS, HH:MM, HH:MM:SS.nnn, hh, hhmm, hhmmss, hhmmss.nnn,
+// any of the previous postfixed with Z or +/-hh(:mm)?
+func GetTimeFormatFast(str string) (string, error) {
+	timefmt := strings.Builder{}
+
+	// Leave off the date portion
+	if strings.Contains(str, "T") {
+		str = strings.Split(str, "T")[1]
+		timefmt.WriteString("T") // nolint: gas, errcheck
+	}
+
+	// Strip off the timezone and nanosecond portions first, if they exist
+	var tz string
+	for _, ch := range []string{"Z", "+", "-"} {
+		if idx := strings.LastIndex(str, ch); idx > 5 {
+			str, tz = str[:idx], str[idx:]
+			break
+		}
+	}
+
+	var ns string
+	if idx := strings.Index(str, "."); idx != -1 {
+		str, ns = str[:idx-1], str[idx-1:]
+	}
+
+	// Handle the HMS portion
+	if len(str) >= 2 {
+		timefmt.WriteString("15") // nolint: gas, errcheck
+	}
+	switch len(str) {
+	case 4:
+		timefmt.WriteString("04") // nolint: gas, errcheck
+	case 5:
+		timefmt.WriteString(":04") // nolint: gas, errcheck
+	case 6:
+		timefmt.WriteString("0405") // nolint: gas, errcheck
+	case 8:
+		timefmt.WriteString(":04:05") // nolint: gas, errcheck
+	}
+
+	// Handle the NS portion
+	if len(ns) > 1 {
+		timefmt.WriteString(".") // nolint: gas, errcheck
+		ns = ns[1:]
+		for range ns {
+			timefmt.WriteString("0") // nolint: gas, errcheck
+		}
+	}
+
+	// Handle the TZ portion
+	if len(tz) > 0 {
+		timefmt.WriteString(string(tz[0])) // nolint: gas, errcheck
+		tz = tz[1:]
+		switch len(tz) {
+		case 2:
+			timefmt.WriteString("07") // nolint: gas, errcheck
+		case 4:
+			timefmt.WriteString("0700") // nolint: gas, errcheck
+		case 5:
+			timefmt.WriteString("07:00") // nolint: gas, errcheck
+		}
+	}
+
+	return timefmt.String(), nil
 }
