@@ -34,8 +34,3 @@ Failure to participate in step 3 will result in me fixing your code and
 commenting judiciously on your inability to write decent software in
 comments that will appear in godoc. The first result on Google for your
 username won't be very flattering.
-
-## TODO
-- Add function to parse any ISO8601 date format
-- Custom unmarshal function
-- Add list of custom formats and parse function that tries them
