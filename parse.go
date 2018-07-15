@@ -123,6 +123,8 @@ func GetTimeFormatFast(str string) (string, error) {
 	if strings.Contains(str, "T") {
 		str = strings.Split(str, "T")[1]
 		timefmt.WriteString("T") // nolint: gas, errcheck
+	} else {
+		return "", nil
 	}
 
 	// Strip off the timezone and nanosecond portions first, if they exist
