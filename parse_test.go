@@ -73,7 +73,10 @@ var _ = Describe("Parse", func() {
 	})
 
 	Describe("GetTimeFormatFast", func() {
-		var times = []string{"15:04:05", "150405", "1504", "15:04", "15", "150405Z", "150405-07:00"}
+		// Pretty sure that "Z07:00" is far from valid, but according
+		// to Google it is, like, some sort of standard.
+		var times = []string{"T15:04:05", "T150405", "T1504", "T15:04",
+			"T15", "T150405Z", "T150405-07:00", "T150405Z07:00"}
 		for _, d := range times {
 			It(fmt.Sprintf("It should parse time %s", d), func() {
 				res, err := GetTimeFormatFast(d)
