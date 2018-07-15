@@ -42,12 +42,16 @@ func (p *ParseError) Error() string {
 // It uses the package specified pattern finding functions
 // to determine the pattern and then calls time.Parse internally.
 func Parse(str string) (time.Time, error) {
-	datefmt, err := GetDateFormatFast(str)
+	datefmt, err := DateParser(str)
 	if err != nil {
-		return time.Time{}, err
+		return time.Time{}, errors.Wrap(err, NewParseError(str, "Parsing date format"))
+	}
+	timefmt, err := TimeParser(str)
+	if err != nil {
+		return time.Time{}, errors.Wrap(err, NewParseError(str, "Parsing time format"))
 	}
 
-	return time.Parse(datefmt, str)
+	return time.Parse(datefmt+timefmt, str)
 }
 
 // GetDateFormatFast attempts to find the date format. Fast.

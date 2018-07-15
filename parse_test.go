@@ -3,6 +3,7 @@ package gotime_test
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -14,6 +15,25 @@ var timestamps = []string{"2006-01-02T15:04:05", "20060102T150405",
 	"2006-01-02T15:04:05Z", "20060102T150405-07:00", "2006-01-02T15:04:05.000"}
 
 var _ = Describe("Parse", func() {
+	Describe("Parse()", func() {
+		It("should parse a timestamp correctly", func() {
+			now := time.Now()
+			Y, M, D := now.Date()
+			h, m, s := now.Clock()
+			str := fmt.Sprintf("%04d%02d%02dT%02d%02d%02d", Y, M, D, h, m, s)
+			res, err := Parse(str)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(now.Format("20060102030405")).To(Equal(res.Format("20060102030405")))
+		})
+
+		It("should return an error if DateParser does", func() {
+			// Note that GetTimeFormatFast does not return any errors
+			res, err := Parse("----T03:04:05")
+			Expect(res).To(BeZero())
+			Expect(err).To(HaveOccurred())
+		})
+	})
+
 	Describe("GetDateFormatFast", func() {
 		var dates = []string{"2006-01-02", "2006-01", "20060102", "--0102", "--01-02"}
 		for _, d := range dates {
@@ -31,6 +51,7 @@ var _ = Describe("Parse", func() {
 			})
 		}
 
+		// Exceptions to the rule
 		It("should choke on week numbers", func() {
 			res, err := GetDateFormatFast("2006-W01")
 			Expect(res).To(BeZero())

@@ -27,3 +27,6 @@ package gotime
 
 // DateParser specifies a function that returns the date format of an ISO timestamp.
 var DateParser = GetDateFormatFast
+
+// TimeParser specifies a function that returns the time format of an ISO timestamp.
+var TimeParser = GetTimeFormatFast
