@@ -25,8 +25,60 @@ variables internally to determine which set of functions to use.
 */
 package gotime
 
+import (
+	"fmt"
+	"strings"
+	"time"
+)
+
 // DateParser specifies a function that returns the date format of an ISO timestamp.
 var DateParser = GetDateFormatFast
 
 // TimeParser specifies a function that returns the time format of an ISO timestamp.
 var TimeParser = GetTimeFormatFast
+
+// Time implements and extends time.Time
+type Time struct {
+	time.Time
+	OriginalFormat string
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface. The time can be in any format.
+func (t *Time) UnmarshalJSON(data []byte) error {
+	value := strings.Trim(string(data), "\"")
+	if value == "" {
+		t.Time = time.Time{}
+		return nil
+	}
+
+	tm, err := Parse(value)
+	t.Time = tm
+
+	return err
+}
+
+// MarshalJSON implements the json.Marshaler interface. The time will be in OriginalFormat if set.
+// If OriginalTime is not set, the function will fall back to time.time.MarshalJSON().
+func (t *Time) MarshalJSON() ([]byte, error) {
+	if t.UnixNano() == (time.Time{}).UnixNano() {
+		return nil, nil
+	}
+	if t.OriginalFormat != "" {
+		return []byte(fmt.Sprintf("\"%s\"", t.Format(t.OriginalFormat))), nil
+	}
+	return t.Time.MarshalJSON()
+}
+
+// UnmarshalText implements the encoding.TextUnmarshaler interface. The time can be in any format.
+func (t *Time) UnmarshalText(data []byte) error {
+	value := string(data)
+	if value == "" {
+		t.Time = time.Time{}
+		return nil
+	}
+
+	tm, err := Parse(value)
+	t.Time = tm
+
+	return err
+}
