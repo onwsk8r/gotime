@@ -26,6 +26,7 @@ variables internally to determine which set of functions to use.
 package gotime
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"strings"
 	"time"
@@ -81,4 +82,9 @@ func (t *Time) UnmarshalText(data []byte) error {
 	t.Time = tm
 
 	return err
+}
+
+// Value returns the embedded time.Time for use with SQL queries
+func (t *Time) Value() (driver.Value, error) {
+	return t.Time, nil
 }
