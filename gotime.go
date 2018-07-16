@@ -30,6 +30,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/juju/errors"
 )
 
 // DateParser specifies a function that returns the date format of an ISO timestamp.
@@ -87,4 +89,13 @@ func (t *Time) UnmarshalText(data []byte) error {
 // Value returns the embedded time.Time for use with SQL queries
 func (t *Time) Value() (driver.Value, error) {
 	return t.Time, nil
+}
+
+// Scan implements the sql.Scanner interface
+func (t *Time) Scan(value interface{}) error {
+	var ok bool
+	if t.Time, ok = value.(time.Time); !ok {
+		return errors.New("Error converting value to time")
+	}
+	return nil
 }
