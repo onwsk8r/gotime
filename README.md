@@ -4,7 +4,7 @@ A small library of useful extensions to Golang's time package
 
 ## Documentation
 
-Use the [Source](https://godoc.org/onwsk8r/gotime)!
+Use the [Source](https://godoc.org/github.com/onwsk8r/gotime)!
 
 ## 700mb Overview
 So I had this JSON that looked something like this:
