@@ -7,7 +7,7 @@
         "varcheck",
         "maligned",
         "deadcode",
-        "gas",
+        "gosec",
         "megacheck",
         "safesql",
         "vetshadow",

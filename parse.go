@@ -83,7 +83,7 @@ func GetDateFormatFast(str string) (string, error) {
 		// 	datefmt = "2006-W01"
 		// }
 		return "", NewParseError(str, "Cannot parse week numbers")
-	} else if s, _ := strconv.Atoi(str); strconv.Itoa(s) == str { // nolint: gas, errcheck
+	} else if s, _ := strconv.Atoi(str); strconv.Itoa(s) == str { // nolint: gosec, errcheck
 		switch len(str) {
 		case 7: // YYYYDDD
 			return "", NewParseError(str, "Cannot parse day of year")
@@ -122,7 +122,7 @@ func GetTimeFormatFast(str string) (string, error) {
 	// Leave off the date portion
 	if strings.Contains(str, "T") {
 		str = strings.Split(str, "T")[1]
-		timefmt.WriteString("T") // nolint: gas, errcheck
+		timefmt.WriteString("T") // nolint: gosec, errcheck
 	} else {
 		return "", nil
 	}
@@ -143,39 +143,39 @@ func GetTimeFormatFast(str string) (string, error) {
 
 	// Handle the HMS portion
 	if len(str) >= 2 {
-		timefmt.WriteString("15") // nolint: gas, errcheck
+		timefmt.WriteString("15") // nolint: gosec, errcheck
 	}
 	switch len(str) {
 	case 4:
-		timefmt.WriteString("04") // nolint: gas, errcheck
+		timefmt.WriteString("04") // nolint: gosec, errcheck
 	case 5:
-		timefmt.WriteString(":04") // nolint: gas, errcheck
+		timefmt.WriteString(":04") // nolint: gosec, errcheck
 	case 6:
-		timefmt.WriteString("0405") // nolint: gas, errcheck
+		timefmt.WriteString("0405") // nolint: gosec, errcheck
 	case 8:
-		timefmt.WriteString(":04:05") // nolint: gas, errcheck
+		timefmt.WriteString(":04:05") // nolint: gosec, errcheck
 	}
 
 	// Handle the NS portion
 	if len(ns) > 1 {
-		timefmt.WriteString(".") // nolint: gas, errcheck
+		timefmt.WriteString(".") // nolint: gosec, errcheck
 		ns = ns[1:]
 		for range ns {
-			timefmt.WriteString("0") // nolint: gas, errcheck
+			timefmt.WriteString("0") // nolint: gosec, errcheck
 		}
 	}
 
 	// Handle the TZ portion
 	if len(tz) > 0 {
-		timefmt.WriteString(string(tz[0])) // nolint: gas, errcheck
+		timefmt.WriteString(string(tz[0])) // nolint: gosec, errcheck
 		tz = tz[1:]
 		switch len(tz) {
 		case 2:
-			timefmt.WriteString("07") // nolint: gas, errcheck
+			timefmt.WriteString("07") // nolint: gosec, errcheck
 		case 4:
-			timefmt.WriteString("0700") // nolint: gas, errcheck
+			timefmt.WriteString("0700") // nolint: gosec, errcheck
 		case 5:
-			timefmt.WriteString("07:00") // nolint: gas, errcheck
+			timefmt.WriteString("07:00") // nolint: gosec, errcheck
 		}
 	}
 
