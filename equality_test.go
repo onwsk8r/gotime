@@ -8,17 +8,19 @@ import (
 	. "github.com/onwsk8r/gotime"
 )
 
+func init() {
+	// Make sure "local" time is CDT
+	var err error
+	if time.Local, err = time.LoadLocation("America/Chicago"); err != nil {
+		Fail("Could not set time.Local")
+	}
+}
+
 // nolint: dupl
 var _ = Describe("Equality Functions", func() {
 	var refLocal, refUTC, refDateLocal, refTimeLocal, refDateUTC, refTimeUTC time.Time
 
 	BeforeEach(func() {
-		// Make sure "local" time is CDT
-		var err error
-		if time.Local, err = time.LoadLocation("America/Chicago"); err != nil {
-			Fail("Could not set time.Local")
-		}
-
 		// Give us some times to play with
 		refLocal = time.Date(2006, time.January, 2, 15, 4, 5, 0, time.Local)
 		refUTC = time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)
