@@ -1,11 +1,16 @@
 /*Package gotime adds some handy functionality to the Golang time package.
 
-Right now that functionality is limited in scope to parsing ISO-8601 dates
+One of the main functions of this library is parsing ISO-8601 dates
 that do not include the full RFC3339 format. For example, something like
 time.Time.UnmarshalJSON("2018-07-14") will fail, whereas something like
 time.Time.UnmarshalJSON("2018-04-14 08:23:35Z") will succeed. The format
 constraints this library uses came from https://en.wikipedia.org/wiki/ISO_8601
 on 2018-195T10-05.
+
+The functions in equality.go ({Date,Time}Equals* and SameTime) can be used to
+compare part of a time.Time, for example to see if the dates are the same
+irrespective of the time zone or if just the time portion is the same down to
+the second.
 
 The word "format" is used herein to mean "a valid first argument to time.Parse()".
 

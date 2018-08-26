@@ -4,23 +4,13 @@ A small library of useful extensions to Golang's time package
 
 ## Documentation
 
-Use the [Source](https://godoc.org/github.com/onwsk8r/gotime)!
+Use the [Source](https://godoc.org/github.com/onwsk8r/gotime)! The package comment details the functionality of the library to keep things DRY.
 
 ## 700mb Overview
 
-So I had this JSON that looked something like this:
+If there's one thing computers are bad at, it's working with dates. On the one hand, we have libraries such as [moment.js](https://momentjs.com/) which give us basic functionality that is mostly already present in Go. On the other hand, though, there's a lot of functionality that would be nice to have, such as parsing JSON dates that aren't accurate to the millisecond or anything involving workdays. This library also aims to provide convenience functions (aren't all functions really just convenience functions?) for finding and comparing dates.
 
-```json
-"date": "2018-07-14"
-```
-
-And I got tired of writing my own date type for like the millionth
-time because someone didn't have an ISO date down to the millisecond.
-I decided to write a function that could parse anything that looks like
-an ISO date, and then I wanted to add simpler parsing for other formats
-as well, like when you use them more than once.
-
-## Help Us Grow!
+## Help Us Grow
 
 If you have functionality that you'd like to add to this library or decouple from an app, feel free to open a feature request with some sample code. If you have a great idea, we'd love to hear about it! If your timing is serendipitous, I'll write it myself.
 
