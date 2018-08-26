@@ -63,7 +63,7 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaler interface. The time will be in OriginalFormat if set.
 // If OriginalTime is not set, the function will fall back to time.time.MarshalJSON().
 func (t *Time) MarshalJSON() ([]byte, error) {
-	if t.UnixNano() == (time.Time{}).UnixNano() {
+	if t.IsZero() {
 		return nil, nil
 	}
 	if t.OriginalFormat != "" {
