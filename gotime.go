@@ -12,6 +12,10 @@ compare part of a time.Time, for example to see if the dates are the same
 irrespective of the time zone or if just the time portion is the same down to
 the second.
 
+search.go contains functions for finding the first, last, and nth occurrence of
+a particular day in a month. These are handy, for example, when figuring out the
+date of a holiday such as Thanksgiving in the United States.
+
 The word "format" is used herein to mean "a valid first argument to time.Parse()".
 
 The Get{Date,Time}Format functions interrogate their string parameter, which
