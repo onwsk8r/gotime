@@ -4,7 +4,10 @@ A small library of useful extensions to Golang's time package
 
 ## Documentation
 
-Use the [Source](https://godoc.org/github.com/onwsk8r/gotime)! The package comment details the functionality of the library to keep things DRY.
+Use the [Source](https://godoc.org/github.com/onwsk8r/gotime)! The package comment has additional details; all in all, we're just trying to keep the docs DRY.
+
+- [gotime](https://godoc.org/github.com/onwsk8r/gotime)
+- [holiday](https://godoc.org/github.com/onwsk8r/gotime/holiday)
 
 ## 700mb Overview
 
