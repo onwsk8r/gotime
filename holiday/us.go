@@ -119,5 +119,5 @@ func parseYear(year ...int) (y int) {
 	} else {
 		y = year[0]
 	}
-	return
+	return // nolint: nakedret
 }
