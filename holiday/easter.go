@@ -13,10 +13,10 @@ func Easter(year ...int) time.Time {
 	y := parseYear(year...)
 
 	g, c := y%19, y/100
-	h := int(c-(c/4)-((8*c+13)/25)+19*g+15) % 30
+	h := (c - (c / 4) - ((8*c + 13) / 25) + 19*g + 15) % 30
 	i := h - (h/28)*(1-(h/28)*(29/(h+1))*((21-g)/11))
 
-	var day = i - (int(y+(y/4)+i+2-c+(c/4)) % 7) + 28
+	var day = i - ((y + (y / 4) + i + 2 - c + (c / 4)) % 7) + 28
 	var month time.Month = 3
 
 	if day > 31 {
