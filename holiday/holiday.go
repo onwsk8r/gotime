@@ -26,27 +26,6 @@ import (
 	"github.com/onwsk8r/gotime"
 )
 
-// Finder is an interface for holiday calculation functions. Each function
-// should accept an optional integer parameter for the year and return the
-// date of the holiday. If a parameter is not specified, the function
-// should calculate the date of the holiday for the current year.
-// The returned time should be in local time (ie time.Local) with
-// zeroes for hours, minutes, seconds, and nanoseconds.
-type Finder func(year ...int) time.Time
-
-// List represents a list of holiday Finders
-type List []Finder
-
-// Contains checks if <date> exists in the List.
-func (l *List) Contains(date time.Time) bool {
-	return CheckExact(date, l)
-}
-
-// Observes checks if <date> is an observed holiday.
-func (l *List) Observes(date time.Time) bool {
-	return Check(date, l)
-}
-
 // TradingHolidays are days the US stock markets are closed.
 // This list does not include the days the markets close early: on July 3,
 // the day before Thanksgiving, and Christmas Eve the markets close at 1pm ET.
@@ -77,6 +56,27 @@ var FederalHolidays List = []Finder{
 	VeteransDay,
 	Thanksgiving,
 	ChristmasDay,
+}
+
+// Finder is an interface for holiday calculation functions. Each function
+// should accept an optional integer parameter for the year and return the
+// date of the holiday. If a parameter is not specified, the function
+// should calculate the date of the holiday for the current year.
+// The returned time should be in local time (ie time.Local) with
+// zeroes for hours, minutes, seconds, and nanoseconds.
+type Finder func(year ...int) time.Time
+
+// List represents a list of holiday Finders
+type List []Finder
+
+// Contains checks if <date> exists in the List.
+func (l *List) Contains(date time.Time) bool {
+	return CheckExact(date, l)
+}
+
+// Observes checks if <date> is an observed holiday.
+func (l *List) Observes(date time.Time) bool {
+	return Check(date, l)
 }
 
 // Observed returns the observed date of a holiday.
