@@ -1,4 +1,4 @@
-# Gotime [![Build Status](https://travis-ci.org/onwsk8r/gotime.svg?branch=master)](https://travis-ci.org/onwsk8r/gotime) [![Coverage Status](https://coveralls.io/repos/github/onwsk8r/gotime/badge.svg?branch=master)](https://coveralls.io/github/onwsk8r/gotime?branch=master)
+# Gotime [![Build Status](https://travis-ci.org/onwsk8r/gotime.svg?branch=master)](https://travis-ci.org/onwsk8r/gotime) [![Coverage Status](https://coveralls.io/repos/github/onwsk8r/gotime/badge.svg?branch=master)](https://coveralls.io/github/onwsk8r/gotime?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/onwsk8r/gotime)](https://goreportcard.com/report/github.com/onwsk8r/gotime)
 
 A small library of useful extensions to Golang's time package
 
