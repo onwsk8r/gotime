@@ -113,11 +113,9 @@ func NYEve(year ...int) time.Time {
 }
 
 // Parse year keeps the functions above DRY
-func parseYear(year ...int) (y int) {
+func parseYear(year ...int) int {
 	if len(year) == 0 {
-		y = time.Now().Year()
-	} else {
-		y = year[0]
+		return time.Now().Year()
 	}
-	return // nolint: nakedret
+	return year[0]
 }
