@@ -89,7 +89,7 @@ func Observed(holiday time.Time) time.Time {
 	// NYE Exception
 	if holiday.Day() == 1 && holiday.Month() == time.January &&
 		holiday.Weekday() == time.Saturday {
-		holiday = holiday.Add(24 * time.Hour)
+		holiday = holiday.Add(48 * time.Hour)
 	}
 	switch holiday.Weekday() {
 	case time.Saturday:
